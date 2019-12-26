@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F10721</color>
+    <color name="colorPrimaryDark">#F10721</color>
+    <color name="colorAccent">#11EBE7E7</color>
+
+    <color name="cart_button_color">#4CAF50</color>
+    <color name="lineBackground">#DFDFDF</color>
+    <color name="background">#FAFAFA</color>
+
+</resources>

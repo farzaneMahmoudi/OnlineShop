@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_1"
+        >
+        <item
+            android:id="@+id/menu_home"
+            android:icon="@drawable/ic_home_black"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/menu_categories"
+            android:icon="@drawable/ic_format_list"
+            android:title="@string/category" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_2"
+        >
+            <item
+                android:icon="@drawable/ic_add_shopping_cart_black"
+                android:id="@+id/menu_cart"
+                android:title="@string/cart"/>
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_3"
+        >
+        <item
+            android:icon="@drawable/ic_star_black"
+            android:id="@+id/menu_most_visited"
+            android:title="@string/most_visited_products"/>
+        <item
+            android:icon="@drawable/ic_star_black"
+            android:id="@+id/menu_recent_products"
+            android:title="@string/recent_products"/>
+        <item
+            android:icon="@drawable/ic_star_black"
+            android:id="@+id/menu_best_products"
+            android:title="@string/best_products"/>
+        <item
+            android:icon="@drawable/ic_star_black"
+            android:id="@+id/menu_recommended_products"
+            android:title="@string/recommended_products"/>
+    </group>
+
+
+</menu>
