@@ -91,6 +91,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Recent
                 originalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 originalPrice.setPaintFlags( originalPrice.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                originalPrice.setTextColor(mContext.getResources().getColor(R.color.cart_button_color));
                 salePrice.setVisibility(View.INVISIBLE);
                 originalPrice.setGravity(Gravity.CENTER_VERTICAL);
             }

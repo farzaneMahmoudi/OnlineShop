@@ -63,22 +63,19 @@ public class ProductListActivity extends AppCompatActivity implements AppReposit
         if(mAdapterdapter == null) {
             mAdapterdapter = new PagerAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), mCategoriesList);
             mViewPager.setAdapter(mAdapterdapter);
-            mViewPager.setOffscreenPageLimit(1);
-            // mTabLayout.setupWithViewPager(mViewPager);
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-
         }
         else{
             mAdapterdapter.setList(mCategoriesList);
             mAdapterdapter.notifyDataSetChanged();
         }
-
-
     }
 
     private void initUi() {
         mTabLayout = findViewById(R.id.tabs);
         mViewPager = findViewById(R.id.frameLayout_view_pager);
+        mViewPager.setOffscreenPageLimit(1);
+        mTabLayout.setupWithViewPager(mViewPager);
         mLinearLayout = findViewById(R.id.linear_activity_pro_list);
         ViewCompat.setLayoutDirection(mLinearLayout, ViewCompat.LAYOUT_DIRECTION_RTL);
     }

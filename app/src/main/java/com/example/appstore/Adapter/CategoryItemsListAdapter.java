@@ -1,6 +1,7 @@
 
 package com.example.appstore.Adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.appstore.Model.ImagesItem;
 import com.example.appstore.Model.ResponseModel;
 import com.example.appstore.R;
+import com.example.appstore.View.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -59,6 +61,13 @@ public class CategoryItemsListAdapter extends RecyclerView.Adapter<CategoryItems
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             findView(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = DetailProductActivity.newIntent(mContext,mResponseModel.getId());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         private void findView(@NonNull View itemView) {

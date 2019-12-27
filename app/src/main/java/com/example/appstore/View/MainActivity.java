@@ -60,12 +60,15 @@ public class MainActivity extends SingleFragmentActivity
                         break;
                     }
                     case R.id.menu_most_visited:{
+                        startActivity(NavProListActivity.newIntent(MainActivity.this,NavProListFragment.MOST_VISITED));
                         break;
                     }
                     case R.id.menu_recent_products:{
+                        startActivity(NavProListActivity.newIntent(MainActivity.this,NavProListFragment.RECENT_PRODUCT));
                         break;
                     }
                     case R.id.menu_best_products:{
+                        startActivity(NavProListActivity.newIntent(MainActivity.this,NavProListFragment.BEST_PRODUCT));
                         break;
                     }
                     case R.id.menu_recommended_products:{

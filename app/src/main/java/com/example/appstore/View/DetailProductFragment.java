@@ -84,7 +84,7 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
     private void initUI(View view) {
         mSliderLayout = view.findViewById(R.id.slider_product_image);
         proName = view.findViewById(R.id.title);
-        proDescription = view.findViewById(R.id.description);
+        //proDescription = view.findViewById(R.id.description);
         realPrice = view.findViewById(R.id.cost);
         addToCard = view.findViewById(R.id.button_add_to_card);
     }
@@ -144,7 +144,7 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
 
     private void setUi(ResponseModel product) {
         proName.setText(product.getName());
-        proDescription.setText(product.getDescription());
+       // proDescription.setText(product.getDescription());
         String original = product.getRegularPrice();
         realPrice.setText(original);
         List<ImagesItem> imagesItems = product.getImages();

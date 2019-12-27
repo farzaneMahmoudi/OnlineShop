@@ -30,5 +30,3 @@ public interface AppService {
     @GET("products/?") Call<List<ResponseModel>> getProductsOfSpecificCategory
             (@QueryMap Map<String, String> productQueries , @Query("category") String categoryId/*, @Query("name") String name*/);
 }
-
-
