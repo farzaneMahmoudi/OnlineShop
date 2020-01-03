@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity {
+public class CategoryProductListActivity extends AppCompatActivity {
 
     public static final String EXTRA_PRODUCT_LIST_ACTIVITY = "EXTRA_PRODUCT_LIST_ACTIVITY";
     private Toolbar mToolbar;
@@ -34,7 +34,7 @@ public class ProductListActivity extends AppCompatActivity {
     private PagerAdapter mAdapter;
 
     public static Intent newIntent(Context context, int numOfCategories) {
-        Intent intent = new Intent(context, ProductListActivity.class);
+        Intent intent = new Intent(context, CategoryProductListActivity.class);
         intent.putExtra(EXTRA_PRODUCT_LIST_ACTIVITY, numOfCategories);
         return intent;
     }

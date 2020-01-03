@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E22D2D</color>
-    <color name="colorPrimaryDark">#E22D2D</color>
+    <color name="colorPrimary">#E01233</color>
+    <color name="colorPrimaryDark">#E01233</color>
     <color name="colorAccent">#11EBE7E7</color>
+
 
     <color name="cart_button_color">#4CAF50</color>
     <color name="lineBackground">#DFDFDF</color>
