@@ -1,56 +1,61 @@
 package com.example.appstore.View;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.appstore.Adapter.ProductsAdapter;
-import com.example.appstore.Model.CategoriesItem;
+import com.example.appstore.View.Adapter.ProductsAdapter;
 import com.example.appstore.Model.ResponseModel;
 import com.example.appstore.Network.AppRepository;
 import com.example.appstore.R;
 
+import com.example.appstore.ViewModel.MainFragmentViewModel;
+import com.example.appstore.databinding.FragmentMainBinding;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.TextSliderView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements AppRepository.AppRepoCallBack {
+public class MainFragment extends Fragment {
 
     private ProductsAdapter mBestProductAdapter;
     private ProductsAdapter mMostVisitedAdapter;
     private ProductsAdapter mProductsAdapter;
 
-    private RecyclerView mRecyclerViewBestProduct;
-    private RecyclerView mRecyclerViewMostVisited;
-    private RecyclerView mRecyclerViewRecentProducts;
+ //  private RecyclerView mRecyclerViewBestProduct;
+   // private RecyclerView mRecyclerViewMostVisited;
+    //private RecyclerView mRecyclerViewRecentProducts;
 
-    private AppRepository mAppRepository;
-    private  List<String> mUrlImages = new ArrayList<>();
-
-    private List<ResponseModel> mRecentProductList = new ArrayList<>();
-    private List<ResponseModel> mBestProductList = new ArrayList<>();
-    private List<ResponseModel> mMostVisitedProductList = new ArrayList<>();
+    private TextView mCompleteListRecent;
+    private TextView mCompleteListBest;
+    private TextView mCompleteListMostVisited;
     private SliderLayout mSliderLayout;
 
+    private AppRepository mAppRepository;
+    private List<String> mUrlImages;
+    private MainFragmentViewModel mViewModel;
+    private FragmentMainBinding mBinding;
+
     public static MainFragment newInstance() {
-        
         Bundle args = new Bundle();
-        
+
         MainFragment fragment = new MainFragment();
         fragment.setArguments(args);
         return fragment;
@@ -64,109 +69,112 @@ public class MainFragment extends Fragment implements AppRepository.AppRepoCallB
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAppRepository = AppRepository.getInstance(this);
-        try {
-            mAppRepository.getRecentProducts();
-            mAppRepository.getBestProducts();
-            mAppRepository.getMostVisitedProducts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mAppRepository = AppRepository.getInstance();
+        mViewModel = ViewModelProviders.of(this).get(MainFragmentViewModel.class);
+        mUrlImages = mViewModel.getPhotoUrls();
+
+        mViewModel.getBestPro().observe(this, bestPro -> setUpBestProAdapter(bestPro));
+        mViewModel.getMostVisitedPro().observe(this, mostVisitedPro -> setUpMostVisitedProAdapter(mostVisitedPro));
+        mViewModel.getRecentPro().observe(this, recentPro -> setUpRecentProAdapter(recentPro));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_main, container, false);
-        findView(view);
+        mBinding = DataBindingUtil
+                .inflate(inflater, R.layout.fragment_main, container, false);
+        //findView(view);
         setUI();
-        setUpAdapter();
+        // setUpAdapter();
         sliderSetup();
+        clickListener();
 
-        return view;
+        return mBinding.getRoot();
+    }
+
+    private void clickListener() {
+        mBinding.mostVisitedRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.MOST_VISITED);
+                startActivity(intent);
+            }
+        });
+
+        mBinding.bestProductsRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.BEST_PRODUCT);
+                startActivity(intent);
+            }
+        });
+
+        mBinding.recentProductsRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.RECENT_PRODUCT);
+                startActivity(intent);
+            }
+        });
     }
 
     private void sliderSetup() {
-
-        for (int i=0;i<mUrlImages.size();i++) {
+        for (int i = 0; i < mUrlImages.size(); i++) {
             TextSliderView textSliderView = new TextSliderView(getContext());
             textSliderView.image(mUrlImages.get(i))
                     .setProgressBarVisible(true);
-            mSliderLayout.addSlider(textSliderView);
+            mBinding.slider.addSlider(textSliderView);
         }
 
-        mSliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mSliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mSliderLayout.setCustomAnimation(new DescriptionAnimation());
-        mSliderLayout.setDuration(3000);
+        mBinding.slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mBinding.slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mBinding.slider.setCustomAnimation(new DescriptionAnimation());
+        mBinding.slider.setDuration(3000);
     }
 
-    private void setUpAdapter() {
-        mProductsAdapter = new ProductsAdapter(getContext());
-        mProductsAdapter.setList(mRecentProductList);
-        mRecyclerViewRecentProducts.setAdapter(mProductsAdapter);
-
-        mBestProductAdapter = new ProductsAdapter(getContext());
-        mBestProductAdapter.setList(mBestProductList);
-        mRecyclerViewBestProduct.setAdapter(mBestProductAdapter);
-
-        mMostVisitedAdapter = new ProductsAdapter(getContext());
-        mMostVisitedAdapter.setList(mMostVisitedProductList);
-        mRecyclerViewMostVisited.setAdapter(mMostVisitedAdapter);
+    private void setUpRecentProAdapter(List<ResponseModel> list) {
+        if (mProductsAdapter == null) {
+            mProductsAdapter = new ProductsAdapter(getContext(), list);
+            mBinding.recentProductsRecyclerView.setAdapter(mProductsAdapter);
+        } else {
+            mProductsAdapter.setList(list);
+            mProductsAdapter.notifyDataSetChanged();
+        }
     }
+
+    private void setUpBestProAdapter(List<ResponseModel> list) {
+        if (mProductsAdapter == null) {
+            mBestProductAdapter = new ProductsAdapter(getContext(), list);
+            mBinding.bestProductsRecyclerView.setAdapter(mBestProductAdapter);
+        } else {
+            mBestProductAdapter.setList(list);
+            mProductsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void setUpMostVisitedProAdapter(List<ResponseModel> list) {
+        if (mProductsAdapter == null) {
+            mMostVisitedAdapter = new ProductsAdapter(getContext(), list);
+            mBinding.mostVisitedRecyclerView.setAdapter(mMostVisitedAdapter);
+        } else {
+            mMostVisitedAdapter.setList(list);
+            mProductsAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     private void setUI() {
-        mRecyclerViewRecentProducts.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        mRecyclerViewBestProduct.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        mRecyclerViewMostVisited.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        mBinding.recentProductsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        mBinding.bestProductsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        mBinding.mostVisitedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
     }
 
     private void findView(View view) {
-        mRecyclerViewBestProduct = view.findViewById(R.id.best_products_recycler_view);
-        mRecyclerViewMostVisited = view.findViewById(R.id.most_visited_recycler_view);
-        mRecyclerViewRecentProducts = view.findViewById(R.id.recent_products_recycler_view);
-        mSliderLayout=view.findViewById(R.id.slider);
+        mSliderLayout = view.findViewById(R.id.slider);
+        mCompleteListRecent = view.findViewById(R.id.complete_list_recent);
+        mCompleteListBest = view.findViewById(R.id.complete_list_best_pro);
+        mCompleteListMostVisited = view.findViewById(R.id.complete_list_most_visited);
     }
 
-
-    @Override
-    public void onResponseRecent(List<ResponseModel> list) {
-        mRecentProductList = list;
-        setUpAdapter();
-
-        for (ResponseModel responseModel:mRecentProductList){
-            mUrlImages.add(responseModel.getImages().get(0).getSrc());
-        }
-        sliderSetup();
-
-    }
-
-    @Override
-    public void onResponseBest(List<ResponseModel> list) {
-        mBestProductList = list;
-        setUpAdapter();
-    }
-
-    @Override
-    public void onResponsePopular(List<ResponseModel> list) {
-        mMostVisitedProductList = list;
-        setUpAdapter();
-    }
-
-    @Override
-    public void onListCategoryResponse(List<CategoriesItem> listCategory) {
-
-    }
-
-    @Override
-    public void onProListSubCategoryResponse(List<ResponseModel> proSubCatList) {
-
-    }
-
-
-    @Override
-    public void onResponseProduct(ResponseModel prodect) {
-
-    }
 }
