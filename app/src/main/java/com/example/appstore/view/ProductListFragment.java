@@ -1,4 +1,4 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 
 import android.os.Bundle;
@@ -12,10 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.appstore.Adapter.CategoryItemsListAdapter;
-import com.example.appstore.Model.CategoriesItem;
-import com.example.appstore.Model.ResponseModel;
-import com.example.appstore.Network.AppRepository;
+import com.example.appstore.view.Adapter.CategoryItemsListAdapter;
+import com.example.appstore.model.ResponseModel;
+import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductListFragment extends Fragment implements AppRepository.AppRepoCallBack {
+public class ProductListFragment extends Fragment {
 
     public static final String ARGS_CATEGORY_FRAGMENT_CATEGORY_ID = "args_category_fragment_category_id";
 
@@ -55,7 +54,7 @@ public class ProductListFragment extends Fragment implements AppRepository.AppRe
         super.onCreate(savedInstanceState);
 
         mCategoryId = getArguments().getInt(ARGS_CATEGORY_FRAGMENT_CATEGORY_ID);
-        mAppRepository = AppRepository.getInstance(this);
+        mAppRepository = AppRepository.getInstance();
 
         try {
             mAppRepository.getProSubCatList(mCategoryId);
@@ -71,7 +70,6 @@ public class ProductListFragment extends Fragment implements AppRepository.AppRe
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
 
         setRecycle(view);
-
         setAdapter(mResponseModels);
 
         return view;
@@ -88,35 +86,10 @@ public class ProductListFragment extends Fragment implements AppRepository.AppRe
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-
-    @Override
-    public void onResponseRecent(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponseBest(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponsePopular(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onListCategoryResponse(List<CategoriesItem> listCategory) {
-
-    }
-
-    @Override
+/*    @Override
     public void onProListSubCategoryResponse(List<ResponseModel> list) {
        mResponseModels = list;
         setAdapter( list);
     }
-
-    @Override
-    public void onResponseProduct(ResponseModel prodect) {
-
-    }
+    */
 }

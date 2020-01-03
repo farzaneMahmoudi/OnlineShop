@@ -1,10 +1,8 @@
 
-package com.example.appstore.Adapter;
+package com.example.appstore.view.Adapter;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.net.Uri;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appstore.Model.ImagesItem;
-import com.example.appstore.Model.ResponseModel;
+import com.example.appstore.model.ImagesItem;
+import com.example.appstore.model.ResponseModel;
 import com.example.appstore.R;
-import com.example.appstore.View.DetailProductActivity;
+import com.example.appstore.view.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

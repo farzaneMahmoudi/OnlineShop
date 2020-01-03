@@ -1,4 +1,4 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

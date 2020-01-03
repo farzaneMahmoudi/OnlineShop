@@ -1,4 +1,4 @@
-package com.example.appstore.Adapter;
+package com.example.appstore.view.Adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.appstore.Model.ResponseModel;
+import com.example.appstore.model.ResponseModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

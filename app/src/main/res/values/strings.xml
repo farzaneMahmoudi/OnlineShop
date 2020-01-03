@@ -13,7 +13,13 @@
     <string name="category"> دسته بندی محصولات </string>
     <string name="login_or_signup">ورود و ثبت نام</string>
     <string name="cart">سبد خرید</string>
+    <string name="complete_list"> لیست کامل</string>
 
     <string name="navigation_drawer_open">open navigation drawer</string>
     <string name="navigation_drawer_close">close navigation drawer</string>
+
+    <string name="error_no_connection">خطا دراتصال به اینترنت!</string>
+    <string name="check_connection">بررسی تنظیمات شبکه</string>
+    <string name="try_again">تلاش مجدد</string>
+
 </resources>

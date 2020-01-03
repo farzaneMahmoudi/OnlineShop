@@ -1,10 +1,11 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.appstore.R;
+import com.example.appstore.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends SingleFragmentActivity
@@ -22,6 +24,7 @@ public class MainActivity extends SingleFragmentActivity
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private ActivityMainBinding mBinding;
 
 
     private int numOfCategories;
@@ -39,13 +42,14 @@ public class MainActivity extends SingleFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.activity_main);
+      mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        initUi();
-        ViewCompat.setLayoutDirection(mDrawerLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
+     //   initUi();
+        ViewCompat.setLayoutDirection(mBinding.drawerLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
         setNavigationDrawer();
 
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
@@ -74,8 +78,6 @@ public class MainActivity extends SingleFragmentActivity
                     case R.id.menu_recommended_products:{
                         break;
                     }
-
-
                 }
                 return true;
             }
@@ -83,23 +85,23 @@ public class MainActivity extends SingleFragmentActivity
     }
 
     private void setNavigationDrawer() {
-        setSupportActionBar(mToolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+        setSupportActionBar(mBinding.toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
+        mBinding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
-    private void initUi() {
+/*    private void initUi() {
         mToolbar = findViewById(R.id.toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-         mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else
             super.onBackPressed();
     }

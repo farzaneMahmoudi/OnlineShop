@@ -1,4 +1,4 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,12 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.appstore.View.Adapter.ProductsAdapter;
-import com.example.appstore.Model.ResponseModel;
-import com.example.appstore.Network.AppRepository;
+import com.example.appstore.view.Adapter.ProductsAdapter;
+import com.example.appstore.model.ResponseModel;
+import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
 
-import com.example.appstore.ViewModel.MainFragmentViewModel;
+import com.example.appstore.viewModel.MainFragmentViewModel;
 import com.example.appstore.databinding.FragmentMainBinding;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;

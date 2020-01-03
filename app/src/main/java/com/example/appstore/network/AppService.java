@@ -1,12 +1,12 @@
-package com.example.appstore.Network;
+package com.example.appstore.network;
 
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 
-import com.example.appstore.Model.CategoriesItem;
-import com.example.appstore.Model.ResponseModel;
+import com.example.appstore.model.CategoriesItem;
+import com.example.appstore.model.ResponseModel;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

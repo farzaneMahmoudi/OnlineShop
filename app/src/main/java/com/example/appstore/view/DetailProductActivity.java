@@ -1,4 +1,4 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;

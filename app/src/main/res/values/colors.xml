@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F10721</color>
-    <color name="colorPrimaryDark">#F10721</color>
+    <color name="colorPrimary">#E22D2D</color>
+    <color name="colorPrimaryDark">#E22D2D</color>
     <color name="colorAccent">#11EBE7E7</color>
 
     <color name="cart_button_color">#4CAF50</color>
     <color name="lineBackground">#DFDFDF</color>
     <color name="background">#FAFAFA</color>
     <color name="dark_background">  #E7E7E7</color>
+
+    <color name="dark_backgroundfghd">#F10721</color>
 
 </resources>

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="4dp"
     android:background="@color/dark_background"
-    tools:context=".View.DetailProductFragment">
+    tools:context=".view.DetailProductFragment">
 
     <com.glide.slider.library.SliderLayout
         android:id="@+id/slider_product_image"
@@ -28,7 +28,7 @@
             android:layout_gravity="end"
             android:padding="8dp"
             android:textColor="#E60F1A22"
-            android:text="description" />
+            />
 
     </androidx.cardview.widget.CardView>
 
@@ -43,7 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:text="120000"
         android:textColor="@android:color/holo_red_dark"
         android:padding="8dp" />
 

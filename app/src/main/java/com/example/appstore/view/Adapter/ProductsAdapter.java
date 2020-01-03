@@ -1,4 +1,4 @@
-package com.example.appstore.Adapter;
+package com.example.appstore.view.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appstore.Model.ImagesItem;
-import com.example.appstore.Model.ResponseModel;
+import com.example.appstore.model.ImagesItem;
+import com.example.appstore.model.ResponseModel;
 import com.example.appstore.R;
-import com.example.appstore.View.DetailProductActivity;
+import com.example.appstore.view.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 
@@ -30,8 +30,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Recent
     private Context mContext;
 
 
-    public ProductsAdapter(Context context){
+    public ProductsAdapter(Context context,List<ResponseModel> list){
         mContext = context;
+        mResponseModelList = list;
     }
 
     public void setList(List responseList) {

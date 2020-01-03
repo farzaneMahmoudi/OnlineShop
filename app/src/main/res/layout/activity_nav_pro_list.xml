@@ -7,7 +7,7 @@
     android:id="@+id/linear_nav_pro_list"
     android:orientation="vertical"
     android:background="@color/dark_background"
-    tools:context=".View.NavProListActivity">
+    tools:context=".view.NavProListActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_nav_product_list_activity"

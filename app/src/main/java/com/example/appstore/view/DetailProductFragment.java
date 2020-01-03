@@ -1,10 +1,11 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.appstore.Model.CategoriesItem;
-import com.example.appstore.Model.ImagesItem;
-import com.example.appstore.Model.ResponseModel;
-import com.example.appstore.Network.AppRepository;
+import com.example.appstore.model.ImagesItem;
+import com.example.appstore.model.ResponseModel;
+import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
+import com.example.appstore.viewModel.DetailProductFragmentViewModel;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.TextSliderView;
@@ -28,26 +29,28 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailProductFragment extends Fragment implements AppRepository.AppRepoCallBack {
+public class DetailProductFragment extends Fragment implements AppRepository.CallBack{
 
-    private static int mProductId;
+    public static final String ARGS_PRODUCT_ID = "args_product_id";
+    private int mProductId;
 
     private AppRepository mFetchItems;
-    private ResponseModel mProduct;
+    private ResponseModel mProduct = new ResponseModel();
 
     private SliderLayout mSliderLayout;
     private TextView proName;
     private TextView proDescription;
     private TextView realPrice;
+    private DetailProductFragmentViewModel mViewModel;
     private Button addToCard;
 
-    ArrayList<String> mUrlImages ;
+    ArrayList<String> mUrlImages;
 
     public static DetailProductFragment newInstance(int id) {
 
         Bundle args = new Bundle();
+        args.putInt(ARGS_PRODUCT_ID,id);
 
-        mProductId = id;
         DetailProductFragment fragment = new DetailProductFragment();
         fragment.setArguments(args);
         return fragment;
@@ -61,13 +64,18 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUrlImages = new ArrayList<>();
-        mFetchItems = AppRepository.getInstance(this);
+        mFetchItems = AppRepository.getInstance();
+        mProductId = getArguments().getInt(ARGS_PRODUCT_ID);
+
+        mViewModel = ViewModelProviders.of(this).get(DetailProductFragmentViewModel.class);
         try {
-            mFetchItems.getSpecificProducts(mProductId);
+            mViewModel.loadData(mProductId);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mProduct = new ResponseModel();
+        mFetchItems.setCallBack(this);
+
+      //  mViewModel.getData().observe(this,model -> setUi(model));
     }
 
     @Override
@@ -77,7 +85,6 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
         View view = inflater.inflate(R.layout.fragment_detail_product, container, false);
 
         initUI(view);
-        setUi( mProduct);
         return view;
     }
 
@@ -100,6 +107,7 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
             TextSliderView textSliderView = new TextSliderView(getContext());
             textSliderView.image(mUrlImages.get(i))
                     .setProgressBarVisible(true);
+            mSliderLayout.removeAllSliders();
             mSliderLayout.addSlider(textSliderView);
         }
 
@@ -109,46 +117,19 @@ public class DetailProductFragment extends Fragment implements AppRepository.App
         mSliderLayout.setDuration(3000);
     }
 
-    @Override
-    public void onResponseRecent(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponseBest(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponsePopular(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onListCategoryResponse(List<CategoriesItem> listCategory) {
-
-    }
-
-    @Override
-    public void onProListSubCategoryResponse(List<ResponseModel> proSubCatList) {
-
-    }
-
-
-    @Override
-    public void onResponseProduct(ResponseModel product) {
-        mProduct = product;
-        setUi(product);
-
-    }
-
     private void setUi(ResponseModel product) {
         proName.setText(product.getName());
-       // proDescription.setText(product.getDescription());
+        // proDescription.setText(product.getDescription());
         String original = product.getRegularPrice();
         realPrice.setText(original);
         List<ImagesItem> imagesItems = product.getImages();
-        if(imagesItems !=null)
-        sliderSetup(imagesItems);
+        if (imagesItems != null) {
+            sliderSetup(imagesItems);
+        }
+    }
+
+    @Override
+    public void detailProCallBack(ResponseModel model) {
+          setUi(model);
     }
 }

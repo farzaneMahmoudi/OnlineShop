@@ -1,4 +1,4 @@
-package com.example.appstore.View;
+package com.example.appstore.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,11 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-
-import com.example.appstore.Adapter.PagerAdapter;
-import com.example.appstore.Model.CategoriesItem;
-import com.example.appstore.Model.ResponseModel;
-import com.example.appstore.Network.AppRepository;
+import com.example.appstore.view.Adapter.PagerAdapter;
+import com.example.appstore.model.CategoriesItem;
+import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -22,18 +20,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity implements AppRepository.AppRepoCallBack {
+public class ProductListActivity extends AppCompatActivity {
 
     public static final String EXTRA_PRODUCT_LIST_ACTIVITY = "EXTRA_PRODUCT_LIST_ACTIVITY";
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private AppRepository mAppRepository;
     private LinearLayout mLinearLayout;
 
+    private AppRepository mAppRepository;
     private List<CategoriesItem> mCategoriesList = new ArrayList<>();
     private int numOfTab;
-    private PagerAdapter mAdapterdapter;
+    private PagerAdapter mAdapter;
 
     public static Intent newIntent(Context context, int numOfCategories) {
         Intent intent = new Intent(context, ProductListActivity.class);
@@ -46,28 +44,26 @@ public class ProductListActivity extends AppCompatActivity implements AppReposit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
         setUpToolBar();
-
         initUi();
 
-        mAppRepository = AppRepository.getInstance(this);
+        mAppRepository = AppRepository.getInstance();
         try {
             mAppRepository.getCategories();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         //setPagerAdapter();
     }
 
     private void setPagerAdapter() {
-        if(mAdapterdapter == null) {
-            mAdapterdapter = new PagerAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), mCategoriesList);
-            mViewPager.setAdapter(mAdapterdapter);
+        if(mAdapter == null) {
+            mAdapter = new PagerAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), mCategoriesList);
+            mViewPager.setAdapter(mAdapter);
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         }
         else{
-            mAdapterdapter.setList(mCategoriesList);
-            mAdapterdapter.notifyDataSetChanged();
+            mAdapter.setList(mCategoriesList);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -86,7 +82,7 @@ public class ProductListActivity extends AppCompatActivity implements AppReposit
         getSupportActionBar().setTitle(R.string.category);
     }
 
-    @Override
+/*    @Override
     public void onListCategoryResponse(List<CategoriesItem> listCategory) {
         mCategoriesList = listCategory;
         numOfTab = mCategoriesList.size();
@@ -100,31 +96,5 @@ public class ProductListActivity extends AppCompatActivity implements AppReposit
             mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
         setPagerAdapter();
-    }
-
-    @Override
-    public void onProListSubCategoryResponse(List<ResponseModel> proSubCatList) {
-
-    }
-
-
-    @Override
-    public void onResponseRecent(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponseBest(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponsePopular(List<ResponseModel> list) {
-
-    }
-
-    @Override
-    public void onResponseProduct(ResponseModel prodect) {
-
-    }
+    }*/
 }

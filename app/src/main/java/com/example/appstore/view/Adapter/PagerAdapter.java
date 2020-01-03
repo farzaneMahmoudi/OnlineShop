@@ -1,4 +1,4 @@
-package com.example.appstore.Adapter;
+package com.example.appstore.view.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.appstore.Model.CategoriesItem;
-import com.example.appstore.Model.ResponseModel;
-import com.example.appstore.View.ProductListFragment;
+import com.example.appstore.model.CategoriesItem;
+import com.example.appstore.view.ProductListFragment;
 
 import java.util.List;
 
