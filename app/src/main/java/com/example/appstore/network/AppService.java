@@ -6,6 +6,7 @@ import java.util.Map;
 import retrofit2.Call;
 
 import com.example.appstore.model.CategoriesItem;
+import com.example.appstore.model.Category;
 import com.example.appstore.model.ResponseModel;
 
 import retrofit2.http.GET;
@@ -24,9 +25,14 @@ public interface AppService {
     @GET("products/categories")
     Call<List<CategoriesItem>> getAllCategories(@QueryMap Map<String, String> queries);
 
-    @GET("products/categories/{id}")
-    Call<CategoriesItem> getCategoryById(@Path("id") String categoryId, @QueryMap Map<String, String> queries);
-
     @GET("products/?") Call<List<ResponseModel>> getProductsOfSpecificCategory
-            (@QueryMap Map<String, String> productQueries , @Query("category") String categoryId/*, @Query("name") String name*/);
+            (@QueryMap Map<String, String> productQueries , @Query("category") String categoryId);
+
+    @GET("products/") Call<List<ResponseModel>> getProductsOfPerCategory
+            (@QueryMap Map<String, String> productQueries);
+
+    @GET("products/categories")
+    Call<List<Category>> getSubCategories(@QueryMap Map<String, String> queries,
+                                          @Query("parent") String id);
+
 }

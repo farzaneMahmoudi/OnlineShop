@@ -1,4 +1,4 @@
-package com.example.appstore.Model;
+package com.example.appstore.model;
 
 import com.google.gson.annotations.SerializedName;
 

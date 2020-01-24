@@ -10,21 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.appstore.model.ImagesItem;
 import com.example.appstore.model.ResponseModel;
 import com.example.appstore.R;
 import com.example.appstore.view.DetailProductActivity;
 import com.squareup.picasso.Picasso;
-
-
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.RecentProductViewHolder> {
-
 
     private List<ResponseModel> mResponseModelList;
     private Context mContext;
@@ -71,12 +66,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Recent
             originalPrice = itemView.findViewById(R.id.original_price);
             salePrice = itemView.findViewById(R.id.sale_price);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = DetailProductActivity.newIntent(mContext,mResponseModel.getId());
-                    mContext.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = DetailProductActivity.newIntent(mContext,mResponseModel.getId());
+                mContext.startActivity(intent);
             });
 
         }
@@ -92,7 +84,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Recent
                 originalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 originalPrice.setPaintFlags( originalPrice.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                originalPrice.setTextColor(mContext.getResources().getColor(R.color.cart_button_color));
+                originalPrice.setTextColor(mContext.getResources().getColor(R.color.green_cart_button_color));
                 salePrice.setVisibility(View.INVISIBLE);
                 originalPrice.setGravity(Gravity.CENTER_VERTICAL);
             }

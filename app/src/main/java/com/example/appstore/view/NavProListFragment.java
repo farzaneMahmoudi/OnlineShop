@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavProListFragment extends Fragment {
+public class NavProListFragment extends ConnectivityCheckFragment {
 
     public static final String ARGS_NAV_WHICH_PRO = "ARGS_NAV_WHICH_PRO";
     public static final String BEST_PRODUCT = "BEST_PRODUCT";
@@ -87,9 +87,6 @@ public class NavProListFragment extends Fragment {
                 mResponseModels.addAll(models);
                 setAdapter(models);
             });
-    /*    mResponseModels.addAll(list);
-        setAdapter(mResponseModels)*/
-        ;
 
     }
 
@@ -100,7 +97,6 @@ public class NavProListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nav_pro_list, container, false);
 
         setRecycle(view);
-     //   setAdapter(mResponseModels);
 
         mEndlessRecycler = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
             @Override
@@ -125,14 +121,12 @@ public class NavProListFragment extends Fragment {
 
     private void setAdapter(List<ResponseModel> list) {
         if (mAdapter == null) {
-            mAdapter = new NavProListAdapter(getContext());
-            mAdapter.setResponseModels(list);
+            mAdapter = new NavProListAdapter(getContext(),list);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setResponseModels(mResponseModels);
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
     private void setRecycle(View view) {
@@ -140,23 +134,5 @@ public class NavProListFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
     }
-
-/*    @Override
-    public void onResponseRecent(List<ResponseModel> list) {
-        mResponseModels.addAll(list);
-        setAdapter(mResponseModels);
-    }
-
-    @Override
-    public void onResponseBest(List<ResponseModel> list) {
-        mResponseModels.addAll(list);
-        setAdapter(mResponseModels);
-    }
-
-    @Override
-    public void onResponsePopular(List<ResponseModel> list) {
-        mResponseModels.addAll(list);
-        setAdapter(mResponseModels);
-    }*/
 
 }

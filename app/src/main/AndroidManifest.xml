@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.NoConnectionActivity"></activity>
+        <activity android:name=".view.SearchActivity"></activity>
+        <activity android:name=".view.ProSubCatActivity" />
+        <activity android:name=".view.NoConnectionActivity" />
         <activity android:name=".view.NavProListActivity" />
-        <activity android:name=".view.ProductListActivity" />
+        <activity android:name=".view.CategoryProductListActivity" />
         <activity android:name=".view.DetailProductActivity" />
         <activity android:name=".view.SingleFragmentActivity" />
         <activity android:name=".view.MainActivity" />
@@ -23,9 +25,9 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

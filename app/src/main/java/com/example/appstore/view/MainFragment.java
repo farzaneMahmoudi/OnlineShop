@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.appstore.view.Adapter.ProductsAdapter;
 import com.example.appstore.model.ResponseModel;
-import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
 
 import com.example.appstore.viewModel.MainFragmentViewModel;
@@ -27,28 +26,23 @@ import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.TextSliderView;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends ConnectivityCheckFragment {
 
     private ProductsAdapter mBestProductAdapter;
     private ProductsAdapter mMostVisitedAdapter;
     private ProductsAdapter mProductsAdapter;
-
- //  private RecyclerView mRecyclerViewBestProduct;
-   // private RecyclerView mRecyclerViewMostVisited;
-    //private RecyclerView mRecyclerViewRecentProducts;
 
     private TextView mCompleteListRecent;
     private TextView mCompleteListBest;
     private TextView mCompleteListMostVisited;
     private SliderLayout mSliderLayout;
 
-    private AppRepository mAppRepository;
-    private List<String> mUrlImages;
     private MainFragmentViewModel mViewModel;
     private FragmentMainBinding mBinding;
 
@@ -68,13 +62,14 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAppRepository = AppRepository.getInstance();
         mViewModel = ViewModelProviders.of(this).get(MainFragmentViewModel.class);
-        mUrlImages = mViewModel.getPhotoUrls();
 
         mViewModel.getBestPro().observe(this, bestPro -> setUpBestProAdapter(bestPro));
         mViewModel.getMostVisitedPro().observe(this, mostVisitedPro -> setUpMostVisitedProAdapter(mostVisitedPro));
-        mViewModel.getRecentPro().observe(this, recentPro -> setUpRecentProAdapter(recentPro));
+        mViewModel.getRecentPro().observe(this, recentPro -> {
+            setUpRecentProAdapter(recentPro);
+            sliderSetup(recentPro);
+        });
     }
 
     @Override
@@ -83,45 +78,33 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         mBinding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_main, container, false);
-        //findView(view);
         setUI();
-        // setUpAdapter();
-        sliderSetup();
         clickListener();
 
         return mBinding.getRoot();
     }
 
     private void clickListener() {
-        mBinding.mostVisitedRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.MOST_VISITED);
-                startActivity(intent);
-            }
+        mBinding.completeListMostVisited.setOnClickListener(v -> {
+            Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.MOST_VISITED);
+            startActivity(intent);
         });
 
-        mBinding.bestProductsRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.BEST_PRODUCT);
-                startActivity(intent);
-            }
+        mBinding.completeListBestPro.setOnClickListener(v -> {
+            Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.BEST_PRODUCT);
+            startActivity(intent);
         });
 
-        mBinding.recentProductsRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.RECENT_PRODUCT);
-                startActivity(intent);
-            }
+        mBinding.completeListRecent.setOnClickListener(v -> {
+            Intent intent = NavProListActivity.newIntent(getActivity(), NavProListFragment.RECENT_PRODUCT);
+            startActivity(intent);
         });
     }
 
-    private void sliderSetup() {
-        for (int i = 0; i < mUrlImages.size(); i++) {
+    private void sliderSetup(List<ResponseModel> list) {
+        for (int i = 0; i < list.size(); i++) {
             TextSliderView textSliderView = new TextSliderView(getContext());
-            textSliderView.image(mUrlImages.get(i))
+            textSliderView.image(list.get(i).getImages().get(0).getSrc())
                     .setProgressBarVisible(true);
             mBinding.slider.addSlider(textSliderView);
         }
@@ -143,37 +126,29 @@ public class MainFragment extends Fragment {
     }
 
     private void setUpBestProAdapter(List<ResponseModel> list) {
-        if (mProductsAdapter == null) {
+        if (mBestProductAdapter == null) {
             mBestProductAdapter = new ProductsAdapter(getContext(), list);
             mBinding.bestProductsRecyclerView.setAdapter(mBestProductAdapter);
         } else {
             mBestProductAdapter.setList(list);
-            mProductsAdapter.notifyDataSetChanged();
+            mBestProductAdapter.notifyDataSetChanged();
         }
     }
 
     private void setUpMostVisitedProAdapter(List<ResponseModel> list) {
-        if (mProductsAdapter == null) {
+        if (mMostVisitedAdapter == null) {
             mMostVisitedAdapter = new ProductsAdapter(getContext(), list);
             mBinding.mostVisitedRecyclerView.setAdapter(mMostVisitedAdapter);
         } else {
             mMostVisitedAdapter.setList(list);
-            mProductsAdapter.notifyDataSetChanged();
+            mMostVisitedAdapter.notifyDataSetChanged();
         }
     }
-
 
     private void setUI() {
         mBinding.recentProductsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         mBinding.bestProductsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         mBinding.mostVisitedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-    }
-
-    private void findView(View view) {
-        mSliderLayout = view.findViewById(R.id.slider);
-        mCompleteListRecent = view.findViewById(R.id.complete_list_recent);
-        mCompleteListBest = view.findViewById(R.id.complete_list_best_pro);
-        mCompleteListMostVisited = view.findViewById(R.id.complete_list_most_visited);
     }
 
 }

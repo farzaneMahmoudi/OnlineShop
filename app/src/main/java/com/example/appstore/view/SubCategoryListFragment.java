@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,11 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.appstore.model.Category;
 import com.example.appstore.view.Adapter.CategoryItemsListAdapter;
-import com.example.appstore.model.ResponseModel;
-import com.example.appstore.network.AppRepository;
 import com.example.appstore.R;
-
+import com.example.appstore.viewModel.CategoryProListFragmentViewModel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,28 +25,28 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductListFragment extends Fragment {
+public class SubCategoryListFragment extends ConnectivityCheckFragment {
 
     public static final String ARGS_CATEGORY_FRAGMENT_CATEGORY_ID = "args_category_fragment_category_id";
 
-    private int mCategoryId;
-    private AppRepository mAppRepository;
-
     private RecyclerView mRecyclerView;
-    private CategoryItemsListAdapter mCategoryItemsListAdapter;
-    private List<ResponseModel> mResponseModels = new ArrayList<>();
 
-    public static ProductListFragment newInstance(int id) {
+    private int mCategoryId;
+    private CategoryItemsListAdapter mCategoryItemsListAdapter;
+    private List<Category> mCategoriesItems = new ArrayList<>();
+    private CategoryProListFragmentViewModel mViewModel;
+
+    public static SubCategoryListFragment newInstance(int id) {
 
         Bundle args = new Bundle();
         args.putInt(ARGS_CATEGORY_FRAGMENT_CATEGORY_ID, id);
 
-        ProductListFragment fragment = new ProductListFragment();
+        SubCategoryListFragment fragment = new SubCategoryListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ProductListFragment() {
+    public SubCategoryListFragment() {
         // Required empty public constructor
     }
 
@@ -54,31 +55,39 @@ public class ProductListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mCategoryId = getArguments().getInt(ARGS_CATEGORY_FRAGMENT_CATEGORY_ID);
-        mAppRepository = AppRepository.getInstance();
+        mViewModel = ViewModelProviders.of(this).get(CategoryProListFragmentViewModel.class);
 
         try {
-            mAppRepository.getProSubCatList(mCategoryId);
+            mViewModel.loadCatProList(81).observe(this, responseModels -> {
+                mCategoriesItems = responseModels;
+                setAdapter(mCategoriesItems);
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_product_list, container, false);
 
         setRecycle(view);
-        setAdapter(mResponseModels);
+        setAdapter(mCategoriesItems);
 
         return view;
     }
 
-    private void setAdapter(List<ResponseModel> list) {
-        mCategoryItemsListAdapter = new CategoryItemsListAdapter(getContext());
-        mCategoryItemsListAdapter.setList( list);
-        mRecyclerView.setAdapter(mCategoryItemsListAdapter);
+    private void setAdapter(List<Category> list) {
+        if (mCategoryItemsListAdapter==null) {
+            mCategoryItemsListAdapter = new CategoryItemsListAdapter(getContext(),list);
+            mRecyclerView.setAdapter(mCategoryItemsListAdapter);
+        } else {
+            mCategoryItemsListAdapter.setList(list);
+            mCategoryItemsListAdapter.notifyDataSetChanged();
+        }
     }
 
     private void setRecycle(View view) {
@@ -86,10 +95,4 @@ public class ProductListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-/*    @Override
-    public void onProListSubCategoryResponse(List<ResponseModel> list) {
-       mResponseModels = list;
-        setAdapter( list);
-    }
-    */
 }

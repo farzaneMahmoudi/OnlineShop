@@ -25,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
                 mAppRepository.getRecentProducts();
                 mAppRepository.getBestProducts();
                 mAppRepository.getMostVisitedProducts();
+                mAppRepository.getCategories();
             } catch (IOException e) {
                 e.printStackTrace();
             }

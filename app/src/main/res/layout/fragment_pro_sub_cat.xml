@@ -3,10 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ProductListFragment">
+    tools:context=".view.NavProListFragment">
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view_category_items"/>
+        android:padding="8dp"
+        android:id="@+id/recycle_pro_sub_pro"
+        />
 
 </FrameLayout>

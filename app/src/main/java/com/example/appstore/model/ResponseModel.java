@@ -1,6 +1,4 @@
-package com.example.appstore.Model;
-
-import android.os.Parcelable;
+package com.example.appstore.model;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;

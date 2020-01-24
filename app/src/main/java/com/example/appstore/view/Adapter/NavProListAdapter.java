@@ -10,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.appstore.model.ImagesItem;
 import com.example.appstore.model.ResponseModel;
 import com.example.appstore.R;
@@ -31,8 +29,9 @@ public class NavProListAdapter extends RecyclerView.Adapter<NavProListAdapter.Na
         mResponseModels = responseModels;
     }
 
-    public NavProListAdapter(Context context) {
+    public NavProListAdapter(Context context,List<ResponseModel> list) {
         mContext = context;
+        mResponseModels = list;
     }
 
     @NonNull
@@ -64,22 +63,17 @@ public class NavProListAdapter extends RecyclerView.Adapter<NavProListAdapter.Na
         public NavProListViewHolder(@NonNull View itemView) {
             super(itemView);
             findView(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = DetailProductActivity.newIntent(mContext,mModel.getId());
-                    mContext.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = DetailProductActivity.newIntent(mContext,mModel.getId());
+                mContext.startActivity(intent);
             });
         }
 
         private void findView(@NonNull View itemView) {
-
             mBasePrice = itemView.findViewById(R.id.text_base_price_nav_pro);
             mSalePrice = itemView.findViewById(R.id.text_sale_price_nav_pro);
             mImageViewPro = itemView.findViewById(R.id.image_cat_list_item);
             mProName = itemView.findViewById(R.id.text_nav_item_product_name);
-
         }
 
         private void bind(ResponseModel model) {

@@ -1,8 +1,8 @@
-package com.example.appstore.Model;
+package com.example.appstore.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SelfItem{
+public class CollectionItem{
 
 	@SerializedName("href")
 	private String href;
@@ -18,7 +18,7 @@ public class SelfItem{
 	@Override
  	public String toString(){
 		return 
-			"SelfItem{" + 
+			"CollectionItem{" + 
 			"href = '" + href + '\'' + 
 			"}";
 		}

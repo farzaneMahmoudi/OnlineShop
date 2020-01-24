@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,7 +24,7 @@
             <com.glide.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="190dp"
                 android:background="#E8FFFCFC" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,7 +131,6 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <TextView
                     android:layout_width="wrap_content"

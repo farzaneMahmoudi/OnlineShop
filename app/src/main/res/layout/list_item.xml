@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="235dp"
+        android:layout_height="250dp"
         android:elevation="5dp"
         app:cardElevation="5dp"
         android:layout_margin="4dp">
@@ -22,52 +22,51 @@
                 android:id="@+id/pro_img"
                 android:layout_width="150dp"
                 android:layout_height="140dp"
-                android:scaleType="centerCrop"
                 android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
                 tools:src="@drawable/ic_action_name" />
 
             <TextView
                 android:id="@+id/pro_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Test text"
-                android:textColor="#000002"
-                android:maxWidth="60dp"
-                android:textSize="12sp"
-                android:maxLines="1"
-                android:padding="4dp"
-                android:layout_gravity="start"
-                android:layout_margin="2dp"/>
-
-            <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:layout_margin="2dp"
-                android:background="@color/lineBackground"
-                />
+                android:maxWidth="60dp"
+                android:padding="4dp"
+                android:textColor="#000002"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                tools:text="Test" />
 
             <TextView
                 android:id="@+id/original_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_red_dark"
-                tools:text="199000"
-                android:textSize="12sp"
-                android:padding="4dp"
                 android:layout_gravity="end"
                 android:layout_margin="2dp"
-                />
+                android:padding="4dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                tools:text="199000" />
 
             <TextView
                 android:id="@+id/sale_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="2dp"
                 android:padding="4dp"
                 android:textColor="#4CAF50"
-                tools:text="199000"
+                android:textSize="12sp"
+                tools:text="199000" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_margin="2dp"
-                android:layout_gravity="end"
-                android:textSize="12sp"/>
+                android:background="@color/lineBackground" />
 
 
         </LinearLayout>

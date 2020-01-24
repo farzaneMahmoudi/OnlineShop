@@ -8,6 +8,7 @@
     android:layout_margin="4dp"
     android:elevation="8dp"
     app:cardCornerRadius="2dp"
+    android:layoutDirection="rtl"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +28,6 @@
             android:id="@+id/text_nav_item_product_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:text="product name"
             android:textColor="#D7111111"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
 
             android:text="1200000"
-            android:textColor="@color/cart_button_color"
+            android:textColor="@color/green_cart_button_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line" />
 
