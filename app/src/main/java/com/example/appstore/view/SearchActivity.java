@@ -19,8 +19,4 @@ public class SearchActivity extends SingleFragmentActivity {
         return SearchFragment.newInstance();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 }

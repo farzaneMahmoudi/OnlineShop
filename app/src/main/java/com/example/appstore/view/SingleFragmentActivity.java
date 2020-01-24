@@ -21,6 +21,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null)
-            fm.beginTransaction().add(R.id.fragment_container,createFragment()).commit();
+            fm.beginTransaction().replace(R.id.fragment_container,createFragment()).commit();
     }
 }

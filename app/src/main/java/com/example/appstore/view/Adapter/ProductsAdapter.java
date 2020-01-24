@@ -2,6 +2,7 @@ package com.example.appstore.view.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.view.Gravity;
@@ -76,14 +77,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Recent
         public void bind(ResponseModel responseModel){
             mResponseModel = responseModel;
             productName.setText(responseModel.getName());
+
             String original = responseModel.getRegularPrice();
             String sale = responseModel.getSalePrice();
             originalPrice.setText(original);
-            if (!sale.equalsIgnoreCase("")){
+            if (sale != null & !sale.isEmpty()){
                 salePrice.setText(sale);
                 originalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
-                originalPrice.setPaintFlags( originalPrice.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+               // originalPrice.setPaintFlags( originalPrice.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                 originalPrice.setTextColor(mContext.getResources().getColor(R.color.green_cart_button_color));
                 salePrice.setVisibility(View.INVISIBLE);
                 originalPrice.setGravity(Gravity.CENTER_VERTICAL);

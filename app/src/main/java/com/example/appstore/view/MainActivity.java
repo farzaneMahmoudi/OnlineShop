@@ -95,6 +95,18 @@ public class MainActivity extends SingleFragmentActivity {
         getMenuInflater().inflate(R.menu.home_menu, menu);
 
         MenuItem search = menu.findItem(R.id.search_home);
+        MenuItem cart = menu.findItem(R.id.cart);
+
+        cart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = CartActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+                return true;
+            }
+
+        });
+
         search.setOnMenuItemClickListener(item -> {
             Intent intent = SearchActivity.newIntent(MainActivity.this);
             startActivity(intent);

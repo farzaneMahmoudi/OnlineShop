@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linear"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.CartFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_cart"
+        android:layout_width="match_parent"
+        android:layoutDirection="rtl"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:elevation="4dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_gravity="end"
+            android:textColor="@color/green_cart_button_color"
+            android:text="جمع کل خرید"/>
+
+        <TextView
+            android:id="@+id/total_price_text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+           android:gravity="end"
+            android:text="تومان"
+            android:textColor="@color/green_cart_button_color"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycle_cart"
+        />
+</LinearLayout>
+</layout>
