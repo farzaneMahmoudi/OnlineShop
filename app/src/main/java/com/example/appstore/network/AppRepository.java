@@ -10,6 +10,7 @@ import com.example.appstore.model.Category;
 import com.example.appstore.model.ResponseModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +40,23 @@ public class AppRepository {
     private MutableLiveData<List<ResponseModel>> mListRecentProPerPage = new MutableLiveData<>();
     private MutableLiveData<List<ResponseModel>> mListBestProPerPage = new MutableLiveData<>();
     private MutableLiveData<List<ResponseModel>> mListMostVisitedProPerPage = new MutableLiveData<>();
-
     private MutableLiveData<List<CategoriesItem>> mListCategories = new MutableLiveData<>();
-    // private MutableLiveData<List<ResponseModel>> mListSubCatPro = new MutableLiveData<>();
+
     private CallBack mCallBack;
 
-    public MutableLiveData<List<Category>> getListCategory() {
-        return mListCategory;
+    private MutableLiveData<List<CategoriesItem>> mCategoryItemsLiveData;
+    private MutableLiveData<List<CategoriesItem>> mSubCategoryItemsLiveData;
+
+
+    public MutableLiveData<List<CategoriesItem>> getCategoryItemsLiveData() {
+        return mCategoryItemsLiveData;
     }
 
-    private MutableLiveData<List<Category>> mListCategory=new MutableLiveData<>();
+    public MutableLiveData<List<CategoriesItem>> getSubCategoryItemsLiveData() {
+        return mSubCategoryItemsLiveData;
+    }
+
+    private MutableLiveData<List<Category>> mListCategory = new MutableLiveData<>();
 
     public MutableLiveData<List<ResponseModel>> getListRecentProPerPage() {
         return mListRecentProPerPage;
@@ -62,16 +70,8 @@ public class AppRepository {
         return mListMostVisitedProPerPage;
     }
 
- /*   public MutableLiveData<List<ResponseModel>> getListSubCatPro() {
-        return mListSubCatPro;
-    }*/
-
     public void setCallBack(CallBack callBack) {
         mCallBack = callBack;
-    }
-
-    public LiveData<List<CategoriesItem>> getListCategories() {
-        return mListCategories;
     }
 
     public LiveData<List<ResponseModel>> getListRecentPro() {
@@ -99,6 +99,9 @@ public class AppRepository {
 
         mRetrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         mAppService = mRetrofit.create(AppService.class);
+
+        mCategoryItemsLiveData = new MutableLiveData<>();
+        mSubCategoryItemsLiveData = new MutableLiveData<>();
     }
 
     public void getAllProPerPage(int pageNum) throws IOException {
@@ -246,7 +249,7 @@ public class AppRepository {
         };
     }
 
-    public MutableLiveData<List<ResponseModel>> FetchSearchProduct(String query){
+    public MutableLiveData<List<ResponseModel>> FetchSearchProduct(String query) {
         MutableLiveData<List<ResponseModel>> productList = new MutableLiveData();
         Map<String, String> queryMap = new HashMap<>();
         queryMap.putAll(mQueries);
@@ -276,7 +279,7 @@ public class AppRepository {
         queryMap.putAll(mQueries);
         queryMap.put("display", "subcategories");
 
-       mAppService.getSubCategories(queryMap, String.valueOf(id))
+        mAppService.getSubCategories(queryMap, String.valueOf(id))
                 .enqueue(new Callback<List<Category>>() {
                     @Override
                     public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
@@ -287,33 +290,13 @@ public class AppRepository {
                             SubCatList.setValue(response.body());
                         }
                     }
+
                     @Override
                     public void onFailure(Call<List<Category>> call, Throwable t) {
                         Log.e(TAG, t.getMessage(), t);
                     }
                 });
         return SubCatList;
-    }
-
-    private Callback<List<Category>> getListSubCategoryCallback() {
-        MutableLiveData<List<Category>> mListSubCatPro = new MutableLiveData();
-        return new Callback<List<Category>>() {
-            @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                Log.d(TAG, "onResponse: " + response.message());
-
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "isSuccessful: ");
-                    mListSubCatPro.setValue(response.body());
-                    mListCategory .setValue( response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e(TAG, t.getMessage(), t);
-            }
-        };
     }
 
     private Callback<List<CategoriesItem>> getListCategoryCallback() {
@@ -355,15 +338,18 @@ public class AppRepository {
         return responseLiveData;
     }
 
-    private Callback<List<ResponseModel>> getProSubCatListCategoryCallback(MutableLiveData<List<ResponseModel>> proList) {
-        return new Callback<List<ResponseModel>>() {
-            @Override
-            public void onResponse(Call<List<ResponseModel>> call, Response<List<ResponseModel>> response) {
-                Log.d(TAG, "onResponse: " + response.message());
+    public MutableLiveData<List<ResponseModel>> getProductPerCategoryPerPage(int id,int pageNum) {
+        Map<String, String> queryMap = mQueries;
+        MutableLiveData<List<ResponseModel>> responseLiveData = new MutableLiveData<>();
 
+        queryMap.put("category", String.valueOf(id));
+        queryMap.put("page", String.valueOf(pageNum));
+        mAppService.getProductsOfPerCategory(queryMap).enqueue(new Callback<List<ResponseModel>>() {
+            @Override
+            public void onResponse(Call<List<ResponseModel>> call, retrofit2.Response<List<ResponseModel>> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "isSuccessful: ");
-                    proList.setValue(response.body());
+                    List<ResponseModel> responseList = response.body();
+                    responseLiveData.setValue(responseList);
                 }
             }
 
@@ -371,8 +357,8 @@ public class AppRepository {
             public void onFailure(Call<List<ResponseModel>> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t);
             }
-        };
-
+        });
+        return responseLiveData;
     }
 
     public void getSpecificCategory(int id) throws IOException {
@@ -386,6 +372,68 @@ public class AppRepository {
 
     public interface CallBack {
         public void detailProCallBack(ResponseModel model);
+    }
+
+
+    public void fetchAllSubCategories() {
+        List<CategoriesItem> parentCategories = new ArrayList<>();
+        List<Integer> parentIDs = new ArrayList<>();
+        final List<CategoriesItem> subCategories = new ArrayList<>();
+
+        Map<String, String> queries = new HashMap<>();
+        queries.putAll(mQueries);
+
+        for (int i = 0; i < mCategoryItemsLiveData.getValue().size(); i++) {
+            if (mCategoryItemsLiveData.getValue().get(i).getParent() == 0) {
+                parentIDs.add(mCategoryItemsLiveData.getValue().get(i).getId());
+            }
+        }
+
+        mSubCategoryItemsLiveData.setValue(new ArrayList<CategoriesItem>());
+        for (int i = 0; i < parentIDs.size(); i++) {
+            queries.put("parent", parentIDs.get(i) + "");
+            Call<List<CategoriesItem>> call = mAppService.getAllCategories(queries);
+            call.enqueue(new Callback<List<CategoriesItem>>() {
+                @Override
+                public void onResponse(Call<List<CategoriesItem>> call, Response<List<CategoriesItem>> response) {
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, "onResponse subcategories: " + response.body().size());
+                        subCategories.addAll(response.body());
+                        mSubCategoryItemsLiveData.getValue().addAll(response.body());
+                    } else {
+                        Log.d(TAG, "onResponse subcategories: is not successful ");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<CategoriesItem>> call, Throwable t) {
+                    Log.e(TAG, t.getMessage(), t);
+                }
+            });
+        }
+
+    }
+
+    public void fetchAllCategories() {
+        Call<List<CategoriesItem>> call = mAppService.getAllCategories(mQueries);
+        call.enqueue(new Callback<List<CategoriesItem>>() {
+            @Override
+            public void onResponse(Call<List<CategoriesItem>> call, Response<List<CategoriesItem>> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse categories: ");
+                    List<CategoriesItem> categoriesItems = response.body();
+                    mCategoryItemsLiveData.setValue(categoriesItems);
+                    fetchAllSubCategories();
+                } else {
+                    Log.d(TAG, "onResponse categories: is not successful ");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoriesItem>> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+            }
+        });
     }
 
 }

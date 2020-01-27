@@ -14,12 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.appstore.model.Category;
+import com.example.appstore.model.CategoriesItem;
 import com.example.appstore.view.Adapter.CategoryItemsListAdapter;
 import com.example.appstore.R;
-import com.example.appstore.viewModel.CategoryProListFragmentViewModel;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.example.appstore.viewModel.CategoryActivityViewModel;
+
 import java.util.List;
 
 /**
@@ -33,8 +32,7 @@ public class SubCategoryListFragment extends ConnectivityCheckFragment {
 
     private int mCategoryId;
     private CategoryItemsListAdapter mCategoryItemsListAdapter;
-    private List<Category> mCategoriesItems = new ArrayList<>();
-    private CategoryProListFragmentViewModel mViewModel;
+    private CategoryActivityViewModel mViewModel;
 
     public static SubCategoryListFragment newInstance(int id) {
 
@@ -55,16 +53,8 @@ public class SubCategoryListFragment extends ConnectivityCheckFragment {
         super.onCreate(savedInstanceState);
 
         mCategoryId = getArguments().getInt(ARGS_CATEGORY_FRAGMENT_CATEGORY_ID);
-        mViewModel = ViewModelProviders.of(this).get(CategoryProListFragmentViewModel.class);
-
-        try {
-            mViewModel.loadCatProList(81).observe(this, responseModels -> {
-                mCategoriesItems = responseModels;
-                setAdapter(mCategoriesItems);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mViewModel = ViewModelProviders.of(this).get(CategoryActivityViewModel.class);
+        setObserver();
 
     }
 
@@ -75,12 +65,24 @@ public class SubCategoryListFragment extends ConnectivityCheckFragment {
         View view = inflater.inflate(R.layout.fragment_category_product_list, container, false);
 
         setRecycle(view);
-        setAdapter(mCategoriesItems);
-
         return view;
     }
 
-    private void setAdapter(List<Category> list) {
+    private void setRecycle(View view) {
+        mRecyclerView = view.findViewById(R.id.recycler_view_category_items);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    public void setObserver() {
+        mViewModel.getSubCategoriesByParentIDLiveData(mCategoryId).observe(this, new Observer<List<CategoriesItem>>() {
+            @Override
+            public void onChanged(List<CategoriesItem> categoriesItems) {
+                setAdapter(categoriesItems);
+            }
+        });
+    }
+
+        private void setAdapter(List<CategoriesItem> list) {
         if (mCategoryItemsListAdapter==null) {
             mCategoryItemsListAdapter = new CategoryItemsListAdapter(getContext(),list);
             mRecyclerView.setAdapter(mCategoryItemsListAdapter);
@@ -89,10 +91,4 @@ public class SubCategoryListFragment extends ConnectivityCheckFragment {
             mCategoryItemsListAdapter.notifyDataSetChanged();
         }
     }
-
-    private void setRecycle(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view_category_items);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
 }

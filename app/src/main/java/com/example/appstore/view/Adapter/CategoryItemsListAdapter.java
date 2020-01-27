@@ -17,21 +17,22 @@ import com.example.appstore.R;
 import com.example.appstore.model.Category;
 import com.example.appstore.model.ImagesItem;
 import com.example.appstore.view.DetailProductActivity;
+import com.example.appstore.view.ProSubCatActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class CategoryItemsListAdapter extends RecyclerView.Adapter<CategoryItemsListAdapter.ItemViewHolder> {
 
-    private List<Category> mItemList;
+    private List<CategoriesItem> mItemList;
     private Context mContext;
 
-    public CategoryItemsListAdapter(Context context,List<Category> itemList){
+    public CategoryItemsListAdapter(Context context,List<CategoriesItem> itemList){
         mContext = context;
         mItemList = itemList;
     }
 
-    public void setList(List<Category> list) {
+    public void setList(List<CategoriesItem> list) {
         mItemList = list;
     }
 
@@ -57,7 +58,7 @@ public class CategoryItemsListAdapter extends RecyclerView.Adapter<CategoryItems
 
         private ImageView mImageView;
         private TextView mTextView;
-        private Category mCategoriesItem;
+        private CategoriesItem mCategoriesItem;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,8 +66,8 @@ public class CategoryItemsListAdapter extends RecyclerView.Adapter<CategoryItems
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-              /*  Intent intent = DetailProductActivity.newIntent(mContext, mCategoriesItem.getID());
-                    mContext.startActivity(intent);*/
+                Intent intent = ProSubCatActivity.newIntent(mContext, mCategoriesItem.getId(),mCategoriesItem.getName());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -76,11 +77,12 @@ public class CategoryItemsListAdapter extends RecyclerView.Adapter<CategoryItems
             mTextView = itemView.findViewById(R.id.text_cat_item_product_name);
         }
 
-        public void bind(Category itemModel){
+        public void bind(CategoriesItem itemModel){
             mCategoriesItem = itemModel;
             mTextView.setText(mCategoriesItem.getName());
-            Image src = mCategoriesItem.getImage();
-       //   Picasso.with(mContext).load(src.).into(mImageView);
+            Picasso.with(mContext)
+                    .load(mCategoriesItem.getImage().getSrc())
+                    .into(mImageView);
         }
     }
 }

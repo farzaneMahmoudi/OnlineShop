@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".view.LoginFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:layoutDirection="rtl"
+        android:foregroundGravity="center_horizontal"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_phone_number_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_email"
+            android:drawableLeft="@drawable/ic_email"
+            android:hint="@string/hint_text_phone_number"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:foregroundGravity="center_horizontal"
+        app:hintEnabled="false"
+        app:passwordToggleEnabled="true"
+        android:layoutDirection="rtl"
+        app:passwordToggleTint="#CD000000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_passwor_lock"
+            android:drawableLeft="@drawable/ic_passwor_lock"
+            android:ems="10"
+            android:hint="@string/hint_text_password"
+            android:inputType="numberPassword"
+            android:paddingStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textview_login_as_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:text="@string/sign_up"
+        android:textColor="#1F1D1D"
+        android:textSize="16sp"
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="@string/enter"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/background"
+        android:background="@color/colorPrimary"
+        />
+
+
+</LinearLayout>
+
+

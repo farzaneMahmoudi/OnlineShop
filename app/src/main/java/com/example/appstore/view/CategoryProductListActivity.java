@@ -26,19 +26,15 @@ import java.util.List;
 
 public class CategoryProductListActivity extends AppCompatActivity {
 
-    public static final String EXTRA_PRODUCT_LIST_ACTIVITY = "EXTRA_PRODUCT_LIST_ACTIVITY";
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private LinearLayout mLinearLayout;
+    private ViewPager2 mViewPager;
 
-    private List<CategoriesItem> mCategoriesList = new ArrayList<>();
     private PagerAdapter mAdapter;
     private CategoryActivityViewModel mViewModel;
 
-    public static Intent newIntent(Context context, int numOfCategories) {
+    public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, CategoryProductListActivity.class);
-        intent.putExtra(EXTRA_PRODUCT_LIST_ACTIVITY, numOfCategories);
         return intent;
     }
 
@@ -48,63 +44,24 @@ public class CategoryProductListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_product_list);
 
         mViewModel = ViewModelProviders.of(this).get(CategoryActivityViewModel.class);
-        mViewModel.getCategoriesList().observe(this, categoriesItems -> {
-            setPagerAdapter();
-            setTabs(categoriesItems);
-          //  setPagerAdapterTabs(mCategoriesList);
-        });
-
+        mViewModel.getSubCategoriesLiveData2().getValue();
         setUpToolBar();
         initUi();
-    }
 
-    private void setTabs(List<CategoriesItem> categoriesList) {
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.removeAllTabs();
-        for (int i = 0; i < categoriesList.size() ; i++) {
-            mTabLayout.addTab(mTabLayout.newTab().setText(categoriesList.get(i).getName()));
-        }
-        if (mTabLayout.getTabCount() == 2) {
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        } else {
-            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        }
-
-    }
-
-    private void setPagerAdapter() {
-        mTabLayout.setupWithViewPager(mViewPager);
-
-        if (mAdapter == null) {
-          //  mTabLayout.setupWithViewPager(mViewPager);
-            mAdapter = new PagerAdapter(getSupportFragmentManager(), mCategoriesList);
-
-     /*       TabLayoutMediator tb = new TabLayoutMediator(mTabLayout, mViewPager,true,
-                    new TabLayoutMediator.TabConfigurationStrategy() {
-                        @Override
-                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                            for (int k = 0; k < mCategoriesList.size(); k++) {
-                                tab.setText(mCategoriesList.get(position).getName());
-                            }
-                        }
-                    });
-            tb.attach();*/
-           // mTabLayout.setupWithViewPager(mViewPager);
-            mViewPager.setAdapter(mAdapter);
-            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        } else {
-            mAdapter.setList(mCategoriesList);
-            mAdapter.notifyDataSetChanged();
-        }
+        mAdapter= new PagerAdapter(this);
+        mViewPager.setAdapter(mAdapter);
+        new TabLayoutMediator(mTabLayout, mViewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(mViewModel.getParentCategoriesLiveData().getValue().get(position).getName() + "");
+                    }
+                }).attach();
     }
 
     private void initUi() {
         mTabLayout = findViewById(R.id.tabs);
-        mViewPager = findViewById(R.id.frameLayout_view_pager);
-  //      mViewPager.setOffscreenPageLimit(1);
-       // mTabLayout.setupWithViewPager(mViewPager);
-        mLinearLayout = findViewById(R.id.linear_activity_pro_list);
-        ViewCompat.setLayoutDirection(mLinearLayout, ViewCompat.LAYOUT_DIRECTION_RTL);
+        mViewPager = findViewById(R.id.view_pager_category);
     }
 
     private void setUpToolBar() {

@@ -38,9 +38,9 @@ public class NavProListFragment extends ConnectivityCheckFragment {
     private List<ResponseModel> mResponseModels = new ArrayList<>();
     private NavProListAdapter mAdapter;
     private String mWhichPro;
-    private int pageNumber = 1;
     private NavProListFragmentViewModel mViewModel;
 
+    private int pageNumber = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private EndlessRecyclerViewScrollListener mEndlessRecycler;
@@ -87,7 +87,6 @@ public class NavProListFragment extends ConnectivityCheckFragment {
                 mResponseModels.addAll(models);
                 setAdapter(models);
             });
-
     }
 
     @Override
@@ -131,8 +130,7 @@ public class NavProListFragment extends ConnectivityCheckFragment {
 
     private void setRecycle(View view) {
         mRecyclerView = view.findViewById(R.id.recycle_nav_pro);
-        mLinearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager( new LinearLayoutManager(getContext()));
     }
 
 }

@@ -1,14 +1,14 @@
 package com.example.appstore.view;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,18 +16,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.appstore.R;
 import com.example.appstore.databinding.ActivityMainBinding;
-import com.google.android.material.navigation.NavigationView;
-
-import static java.security.AccessController.getContext;
+import com.example.appstore.viewModel.CategoryActivityViewModel;
 
 public class MainActivity extends SingleFragmentActivity {
 
     private ActivityMainBinding mBinding;
-
-    private int numOfCategories;
+    private Button mButton;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -47,13 +45,20 @@ public class MainActivity extends SingleFragmentActivity {
         ViewCompat.setLayoutDirection(mBinding.drawerLayout, ViewCompat.LAYOUT_DIRECTION_RTL);
         setNavigationDrawer();
 
+        initUI();
+
+        mButton.setOnClickListener(v -> {
+            Intent intent = LoginActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+        });
+
         mBinding.navView.setNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_home: {
                     break;
                 }
                 case R.id.menu_categories: {
-                    startActivity(CategoryProductListActivity.newIntent(MainActivity.this, numOfCategories));
+                    startActivity(CategoryProductListActivity.newIntent(MainActivity.this));
                     break;
                 }
                 case R.id.menu_cart: {
@@ -79,6 +84,11 @@ public class MainActivity extends SingleFragmentActivity {
         });
     }
 
+    private void initUI() {
+        View hView = mBinding.navView.inflateHeaderView(R.layout.nav_header);
+        mButton = hView.findViewById(R.id.nav_button_login_or_sign_up);
+    }
+
     private void setNavigationDrawer() {
         setSupportActionBar(mBinding.toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar,
@@ -90,21 +100,17 @@ public class MainActivity extends SingleFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-         super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu);
 
         getMenuInflater().inflate(R.menu.home_menu, menu);
 
         MenuItem search = menu.findItem(R.id.search_home);
         MenuItem cart = menu.findItem(R.id.cart);
 
-        cart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = CartActivity.newIntent(MainActivity.this);
-                startActivity(intent);
-                return true;
-            }
-
+        cart.setOnMenuItemClickListener(item -> {
+            Intent intent = CartActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+            return true;
         });
 
         search.setOnMenuItemClickListener(item -> {
@@ -112,6 +118,14 @@ public class MainActivity extends SingleFragmentActivity {
             startActivity(intent);
             return true;
         });
-         return true;
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START))
+            mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+        else
+            super.onBackPressed();
     }
 }

@@ -1,21 +1,14 @@
 package com.example.appstore.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,18 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.example.appstore.R;
 import com.example.appstore.databinding.FragmentSearchBinding;
-import com.example.appstore.model.ResponseModel;
-import com.example.appstore.view.Adapter.NavProListAdapter;
-import com.example.appstore.view.Adapter.ProductsAdapter;
-import com.example.appstore.viewModel.SearchFragmentViewModel;
-
-import java.util.List;
-import java.util.zip.Inflater;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -83,7 +67,9 @@ public class SearchFragment extends ConnectivityCheckFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getActivity().startActivity(SearchResultActivity.newIntent(getContext(),query));
+                Intent intent = SearchResultActivity.newIntent(getContext(),query);
+
+                getActivity().startActivity(intent);
                 return true;
             }
 

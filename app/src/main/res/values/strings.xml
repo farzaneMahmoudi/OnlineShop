@@ -12,6 +12,8 @@
     <string name="home"> خانه </string>
     <string name="category"> دسته بندی محصولات </string>
     <string name="login_or_signup">ورود و ثبت نام</string>
+    <string name="enter">ورود </string>
+    <string name="sign_up"> ثبت نام</string>
     <string name="cart">سبد خرید</string>
     <string name="your_cart">سبد خرید شما</string>
     <string name="complete_list"> لیست کامل</string>
@@ -27,6 +29,6 @@
     <string name="toman"> تومان</string>
     <string name="sale_price">تخفیف</string>
     <string name="final_price">قیمت نهایی</string>
-
-
+    <string name="hint_text_phone_number">  شماره موبایل یا ایمیل </string>
+    <string name="hint_text_password">  کلمه عبور </string>
 </resources>
